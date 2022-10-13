@@ -8,4 +8,4 @@
 
 Для измерения ускорения было произведено вычисление произведения квадратных матриц размерностей 100, 200, 500, 1000, 1500 и 2000. Результаты вычисления ускорения представлены на графике:
 
-![картинка, моя картинка](https://github.com/greeger/greeger/blob/master/pictures/cpu_gpu.jpg)
+![картинка, моя картинка](https://github.com/greeger/greeger/blob/master/pictures/gpu_cpu.png)

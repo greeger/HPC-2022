@@ -1,4 +1,4 @@
-## Перемножение матриц
+## Сложение элементов вектора
 
 Лабораторная работа выполнена в google collaboratory с использованием jupyter notebook.
 
@@ -8,4 +8,4 @@
 
 Для измерения ускорения было произведено вычисление произведения квадратных матриц размерностей 100, 200, 500, 1000, 1500 и 2000. Результаты вычисления ускорения представлены на графике:
 
-![картинка, моя картинка](https://github.com/greeger/greeger/blob/master/pictures/gpu_cpu.png)
+![pic](https://github.com/greeger/greeger/blob/master/pictures/gpu_cpu.png)

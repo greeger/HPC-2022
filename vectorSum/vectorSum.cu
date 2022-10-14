@@ -62,9 +62,8 @@ double matmul_gpu(float* A, float* B, float* C, int K, int M, int N){
 
     MatMul <<< gridDim, blockDim >>> (cudaA, cudaB, cudaC, K, M, N);
 
-    cudaThreadSynchronize();
-    cudaEventRecord(end);
     cudaDeviceSynchronize();
+    cudaEventRecord(end);
 	
     cudaEventElapsedTime(&gpu_time, start, end);
 
@@ -74,7 +73,7 @@ double matmul_gpu(float* A, float* B, float* C, int K, int M, int N){
     cudaFree(cudaB);
     cudaFree(cudaC);
 
-    return gpu_time/1000;
+    return gpu_time*1000;
 }
 
 void print_matrix(float* A, int rows, int cols){
@@ -94,7 +93,7 @@ float dif_matrix(float* A, float* B, int l){
 }
 
 int main() {
-    int same = 2000;
+    int same = 1000;
 	  int K = same, M = same, N = same;
 
     float* A = (float *)malloc(K * M * sizeof(float));

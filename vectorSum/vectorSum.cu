@@ -4,19 +4,12 @@
 
 using namespace std;
 
-#define ID(i,j,rows) ((j)*(rows)+(i))
-
-double matmul_cpu(float* A, float* B, float* C, int K, int M, int N){
+double vectorSum_cpu(float* A, int N, float &sum){
+	sum = 0;
     struct timeval start, end;
     gettimeofday(&start, NULL);
-    float t;
-    for(int i = 0; i < K; i++)
-      for(int j = 0; j < N; j++){
-        t = 0;
-        for(int k = 0; k < M; k++)
-          t += A[ID(i,k,K)] * B[ID(k,j,M)];
-        C[ID(i,j,K)] = t;
-      }
+    for(int i = 0; i < N; i++)
+      sum += A[i];
     gettimeofday(&end, NULL);
     return (end.tv_sec - start.tv_sec) + ((double)end.tv_usec - start.tv_usec)/1000000;
 }
@@ -76,52 +69,25 @@ double matmul_gpu(float* A, float* B, float* C, int K, int M, int N){
     return gpu_time/1000;
 }
 
-void print_matrix(float* A, int rows, int cols){
-    for(int i = 0; i < rows; i++){
-      for(int j = 0; j < cols; j++)
-        cout << A[ID(i,j,rows)] << " ";
-      cout << endl;
-    }
-    cout << endl;
-}
-
-float dif_matrix(float* A, float* B, int l){
-    float rez = 0;
-    for(int i = 0; i < l; i++)
-      rez += (A[i] - B[i]) * (A[i] - B[i]);
-    return rez;
-}
-
 int main() {
-    int same = 1000;
-	  int K = same, M = same, N = same;
+    int N = 100;
 
-    float* A = (float *)malloc(K * M * sizeof(float));
-    float* B = (float *)malloc(M * N * sizeof(float));
-    float* C_cpu = (float *)malloc(K * N * sizeof(float));
-    float* C_gpu = (float *)malloc(K * N * sizeof(float));
+    float* A = (float *)malloc(N * sizeof(float));
+    float sum_cpu;
+    float sum_gpu;
 	
     srand(time(0));
-    for (int j = 0; j < K*M; j++)
-      A[j] = rand()%10 + 0.1;
-    for (int j = 0; j < M*N; j++)
-      B[j] = rand()%10 + 0.2;
+    for (int i = 0; i < N; i++)
+      A[i] = rand()%10 + 0.1;
 
-    double rez_cpu = matmul_cpu(A, B, C_cpu, K, M, N);
-    double rez_gpu = matmul_gpu(A, B, C_gpu, K, M, N);
+    double rez_cpu = vectorSum_cpu(A, sum_cpu, N);
+    double rez_gpu = 0;//vectorSum_gpu(A, sum_gpu, N);
 
-    //print_matrix(A, K, M);
-    //print_matrix(B, M, N);
-    //print_matrix(C_cpu, K, N);
-
-    cout << "N = " << same << endl;
+    cout << "N = " << N << endl;
     cout << "cpu: " << rez_cpu << " sec" << endl;
     cout << "gpu: " << rez_gpu << " sec" << endl;
-    cout << "dif: " << dif_matrix(C_cpu, C_gpu, K * N) << endl;
+    cout << "dif: " << sum_cpu - sum_gpu << endl;
 	
     free(A);
-    free(B);
-    free(C_cpu);
-    free(C_gpu);
     return 0;
 }

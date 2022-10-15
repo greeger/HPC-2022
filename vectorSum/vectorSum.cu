@@ -4,8 +4,7 @@
 
 using namespace std;
 
-double vectorSum_cpu(float* A, int N, float &sum){
-	sum = 0;
+double vectorSum_cpu(float* A, float &sum, int N){
     struct timeval start, end;
     gettimeofday(&start, NULL);
     for(int i = 0; i < N; i++)
@@ -14,7 +13,7 @@ double vectorSum_cpu(float* A, int N, float &sum){
     return (end.tv_sec - start.tv_sec) + ((double)end.tv_usec - start.tv_usec)/1000000;
 }
 
-__global__ void MatMul(float* A, float* B, float* C, int K, int M, int N)
+/*__global__ void MatMul(float* A, float* B, float* C, int K, int M, int N)
 {
     int x = blockIdx.y * blockDim.y + threadIdx.x;
     int y = blockIdx.x * blockDim.x + threadIdx.y;
@@ -67,14 +66,14 @@ double matmul_gpu(float* A, float* B, float* C, int K, int M, int N){
     cudaFree(cudaC);
 
     return gpu_time/1000;
-}
+}*/
 
 int main() {
     int N = 100;
 
     float* A = (float *)malloc(N * sizeof(float));
-    float sum_cpu;
-    float sum_gpu;
+    float sum_cpu = 0;
+    float sum_gpu = 0;
 	
     srand(time(0));
     for (int i = 0; i < N; i++)

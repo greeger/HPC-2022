@@ -1,8 +1,5 @@
 #include <iostream>
-//#include <string>
-//#include <stdio.h>
 #include <math.h>
-//#include <cuda.h>
 #include <curand.h>
 #include <sys/time.h>
 #include "EasyBMP_1.06/EasyBMP.h"
@@ -163,15 +160,14 @@ __global__ void cudaRender(Coord* cudaPixels, int w, int h,
     Ray ray = Ray(cam, normalize(linearCombination(Coord(x, y, 0), 1, cam, -1)));
     Coord color = Coord();
 
-    float glossy = 0.1;
+    float glossy = 0.2;
     bool isOk = 1;
     for(int i = 0; i < 5; i++){
       if(isOk){
         ReturnValue value = rayTrace(ray, spheres, nSpheres, lights, nLights);
         ray = value.ray;
         if (getNorm(ray.e) < 0.5) isOk = 0;
-          color = linearCombination(color, 1, value.color, 1 - glossy);
-		glossy = glossy * (1 - glossy);
+          color = linearCombination(color, 1, value.color, (1 - glossy)*pow(glossy, i));
       }
     }
 
@@ -254,7 +250,7 @@ double render(int nSpheres, int nLights, int w, int h, Coord* pixels) {
 
 int main() {
 
-    int nSpheres = 7;
+    int nSpheres = 10;
     int nLights = 2;
     int w = 1920;
     int h = 1080;

@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <curand.h>
 #include <sys/time.h>
-//#include "EasyBMP.h"
+#include "EasyBMP.h"
 
 using namespace std;
 
@@ -63,6 +63,8 @@ double render(int nSpheres, int nLights, int w, int h, int* pixels) {
     }
     cudaMemcpy(cudaSpheres, spheres, nSpheres * 7 * sizeof(float), cudaMemcpyHostToDevice);
     cudaMemcpy(cudaLights, lights, nLights * 3 * sizeof(float), cudaMemcpyHostToDevice);
+    free(spheres);
+    free(lights);
 
     cudaEvent_t start, end;
     cudaEventCreate(&start);

@@ -3,4 +3,3 @@
 * MatMul
 * VectorSum
 * Ray tracing
-* Bilinear interp
